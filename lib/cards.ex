@@ -16,6 +16,9 @@ defmodule Cards do
 
   end
 
+  @doc """
+    Shuffles and Randomizes a deck of cards
+  """
   def shuffle(deck) do
     Enum.shuffle(deck)
   end
@@ -51,11 +54,17 @@ defmodule Cards do
     Enum.split(deck, hand_size)
   end
 
+  @doc """
+    Saves a deck of cards to the file system with the specific filename
+  """
   def save(deck, filename) do
     binary = :erlang.term_to_binary(deck)
     File.write(filename, binary)
   end
 
+  @doc """
+    loads the deck of cards from the file system fromt the specified binary filename
+  """
   def load(filename) do
     { status, binary } = File.read(filename)
     case status do
@@ -64,13 +73,17 @@ defmodule Cards do
     end
   end
 
-  def load(filename) do
-    case File.read(filename) do
-      {:ok, binary} -> :erlang.binary_to_term(binary)
-      {:error, _reason} -> "That File does not exist"
-    end
-  end
+  @doc """
+    Creates a hand with the hand size specified and returns a tuple with the hand and the remaining deck
+  ## Examples 
+      
+      iex> {hand, remaining_deck} = Cards.create_hand(7)
+      iex> length(hand)
+      7
+      iex> length(remaining_deck)
+      45
 
+  """
   def create_hand(hand_size) do
     Cards.create_deck
     |> Cards.shuffle
